@@ -18,11 +18,11 @@
       shell: "aicli list cluster | grep {{ cluster_name }} | cut -d '|' -f3 | tr -d ' '"
       register: cluster_id
 
-    - name: Set the right network type
+    - name: Patching install-config
       uri:
         url: "{{ ai_url }}/api/assisted-install/v1/clusters/{{ cluster_id.stdout }}/install-config"
         method: PATCH        
-        body: '"{\"networking\": {\"networkType\": \"{{ cluster_sdn | default("OVNKubernetes") }}\"}}"'
+        body: '"{\"networking\": {\"networkType\": \"{{ cluster_sdn | default("OVNKubernetes") }}\"}, \"controlPlane\": { \"workloads\": [ { \"name\": \"management\", \"cpuIDs\": \"0-1\" } ] } }"'
         body_format: json
         status_code: 201
 

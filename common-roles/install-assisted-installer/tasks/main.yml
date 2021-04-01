@@ -23,6 +23,6 @@
   when: rhcos_base_iso is defined
 
 - name: Start the assisted installer service
-  shell: "ASSISTED_TAG={{ assisted_tag }} make deploy-onprem"
+  shell: "ASSISTED_ORG=quay.io/jramsay ASSISTED_TAG=workload-partitioning-3 make deploy-onprem"
   args:
     chdir: "/opt/assisted-service-ztp"
