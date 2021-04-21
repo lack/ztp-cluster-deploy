@@ -1,0 +1,25 @@
+---
+# If set, sets up a LUKS slot for TPM disk encryption.
+# Note: Should be INSTEAD of NBDE encryption, not in-addition-to (in that it
+# renders NBDE encryption completely redundant)
+disk_encryption_tpm: false
+
+disk_encryption_nbde_from: ""
+# If set, builds disk_encryption_nbde from the group name given.  Assumes each
+# host in the group has the variables 'tang_url' and 'tang_thumbprint' set:
+#
+#[all:vars]
+#disk_encryption_nbde_from=tangservers
+#
+#[tangservers]
+#tang1 tang_url=http://10.0.0.1:7500 tang_thumbprint=tangserver1thumbprint
+#tang2 tang_url=http://10.0.0.2:7500 tang_thumbprint=tangserver2thumbprint
+
+disk_encryption_nbde: []
+# Example for disk_encryption_nbde with 2 TANG servers
+#disk_encryption_nbde:
+#  - url: http://10.0.0.1:7500
+#    thumbprint: tangserver1thumbprint
+#  - url: http://10.0.0.2:7500
+#    thumbprint: tangserver2thumbprint
+

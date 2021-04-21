@@ -39,6 +39,16 @@ need_racadm=true
 #haproxy_http_port=8008
 #haproxy_https_port=8443
 
+### Disk encryption (uncomment the desired sections)
+# Note: Only one of TPM or NBDE should be enabled at a time.
+#
+# To enable TPM2-based disk encryption (protects against disk theft):
+#disk_encryption_tpm=true
+#
+# To enable NBDE-based disk encryption (protects against whole-unit theft)
+# Note: Requires external server setup prior to installation:
+#disk_encryption_nbde_from=tangservers
+
 [provisioner]
 # host from where the installation is performed
 localhost ansible_connection=local
@@ -53,3 +63,8 @@ master_3 name=master_3 mac_address=52:54:00:55:f3:33
 # only set ip if you need to embed static network. It needs to match with the nmstate config
 worker-0.test-aut.cluster-testing name=worker_0 bmc_type=SuperMicro bmc_address=192.168.111.212 bmc_user="ADMIN" bmc_password="ADMIN" smb_host=192.168.111.1 smb_path=share ip=<host_ip> hostname=<hostname> redeploy=false profile=worker-cnf
 worker-1 bmc_type=Dell name=worker_1 bmc_address=10.16.231.121 bmc_user="usr" bmc_password="pwd" 
+
+# Tang server definitions; required if you use 'disk_encryption_nbde_from' above:
+#[tangservers]
+#tang1 tang_url=http://10.0.0.1:7500 tang_thumbprint=tangserver1thumbprint
+#tang2 tang_url=http://10.0.0.2:7500 tang_thumbprint=tangserver2thumbprint

@@ -1,0 +1,19 @@
+---
+- name: collect nbde server info
+  set_fact:
+    disk_encryption_nbde: "{{ disk_encryption_nbde | default([]) + [{'url': hostvars[item]['tang_url'], 'thumbprint': hostvars[item]['tang_thumbprint'] }] }}"
+  loop: "{{ groups[disk_encryption_nbde_from] }}"
+  when: disk_encryption_nbde_from and disk_encryption_nbde_from in groups
+
+- name: Create the disk-encryption Ignition manifests
+  template:
+    src: templates/disk-encryption-ignition.yaml
+    dest: "{{ manifests_path }}/disk-encryption-{{ item }}.yaml"
+    trim_blocks: yes
+    lstrip_blocks: yes
+  vars:
+    role: "{{ item }}"
+  loop:
+    - master
+    - worker
+  when: disk_encryption_tpm or disk_encryption_nbde

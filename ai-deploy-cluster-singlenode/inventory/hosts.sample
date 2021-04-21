@@ -57,6 +57,16 @@ virtualmedia_over_http=True
 # network_config_path=./sample/worker_sno.yaml
 # hostname="single-node-cluster.test-aut.cluster.testing"
 
+### Disk encryption (uncomment the desired sections)
+# Note: Only one of TPM or NBDE should be enabled at a time.
+#
+# To enable TPM2-based disk encryption (protects against disk theft):
+#disk_encryption_tpm=true
+#
+# To enable NBDE-based disk encryption (protects against whole-unit theft)
+# Note: Requires external server setup prior to installation:
+#disk_encryption_nbde_from=tangservers
+
 ### Workload partitioning
 # This cpuset will be used for pinning management workloads
 # management_workload_cpuset="0-1,52-53"
@@ -65,3 +75,8 @@ virtualmedia_over_http=True
 # host from where the installation is performed
 #<remote_ip> ansible_connection=ssh
 localhost ansible_connection=local
+
+# Tang server definitions; required if you use 'disk_encryption_nbde_from' above:
+#[tangservers]
+#tang1 tang_url=http://10.0.0.1:7500 tang_thumbprint=tangserver1thumbprint
+#tang2 tang_url=http://10.0.0.2:7500 tang_thumbprint=tangserver2thumbprint

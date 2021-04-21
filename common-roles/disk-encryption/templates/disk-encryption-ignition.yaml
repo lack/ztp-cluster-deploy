@@ -1,0 +1,36 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: {{ role }}
+  name: disk-encryption-{{ role }}
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      luks:
+        - name: root
+          device: /dev/disk/by-partlabel/root
+          clevis:
+            {% if disk_encryption_tpm %}
+            tpm2: true
+            {% endif %}
+            {% if disk_encryption_nbde %}
+            tang:
+              {% for entry in disk_encryption_nbde %}
+              - url: {{ entry.url }}
+                thumbprint: {{ entry.thumbprint }}
+              {% endfor %}
+            {% endif %}
+          options: [--cipher, aes-cbc-essiv:sha256]
+          wipeVolume: true
+      filesystems:
+        - device: /dev/mapper/root
+          format: xfs
+          wipeFilesystem: true
+          label: root 
+    {% if disk_encryption_nbde %}
+    kernelArguments:
+      - rd.neednet=1 
+    {% endif %}

@@ -13,6 +13,9 @@
     - role: create-cluster
       tags: create-cluster
       become: yes
+    - role: ../common-roles/disk-encryption
+      tags: disk-encryption
+      become: yes
     - role: ../common-roles/apply-custom-manifests
       tags: apply-custom-manifests
       become: yes
