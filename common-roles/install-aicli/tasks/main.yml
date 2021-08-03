@@ -2,4 +2,4 @@
 - name: Intall latest aicli
   pip:
     name: aicli
-    state: latest
+    version: 99.0.202106301910.202103111306
